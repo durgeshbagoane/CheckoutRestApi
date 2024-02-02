@@ -113,3 +113,4 @@ c:\Users\user\Desktop\CheckoutRestApi\obj\Debug\net8.0\refint\CheckoutRestApi.dl
 c:\Users\user\Desktop\CheckoutRestApi\obj\Debug\net8.0\CheckoutRestApi.pdb
 c:\Users\user\Desktop\CheckoutRestApi\obj\Debug\net8.0\CheckoutRestApi.genruntimeconfig.cache
 c:\Users\user\Desktop\CheckoutRestApi\obj\Debug\net8.0\ref\CheckoutRestApi.dll
+c:\Users\user\Desktop\CheckoutRestApi\obj\Debug\net8.0\CheckoutRestApi.sourcelink.json

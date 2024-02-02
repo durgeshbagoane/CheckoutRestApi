@@ -7,16 +7,15 @@ namespace CheckoutRestApi.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class CheckoutController: ControllerBase
+    public class CheckoutController(CheckoutLogic checkoutlogic) : ControllerBase
     {
+         private readonly CheckoutLogic checkoutLogic = checkoutlogic;
 
         [HttpPost]
         [Checkout_ValidateCheckoutItemsFilter]
         public IActionResult GetTotal([FromBody]Checkout Checkout)
         {
-            CheckoutLogic checkoutLogic = new();
             Checkout.Total = checkoutLogic.Total(Checkout.Items);
-            
             return Ok(Checkout);
         }
     }

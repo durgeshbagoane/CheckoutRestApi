@@ -7,9 +7,9 @@ namespace CheckoutRestApi.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class ProductController: ControllerBase
+    public class ProductController(ProductRepositories Productrepositories): ControllerBase
     {
-
+        private readonly ProductRepositories ProductRepositories = Productrepositories;
         [HttpGet]
         public IActionResult GetProducts()
         {

@@ -7,26 +7,29 @@ namespace CheckoutRestApi.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class OfferController: ControllerBase
+    public class OfferController(OfferRepositories Offerrepository): ControllerBase
     {
+        private readonly OfferRepositories OfferRepository = Offerrepository;
+
         [HttpGet]
         public IActionResult GetOffers()
         {
-            return Ok(OfferRepositories.GetOffers());
+            
+            return Ok(OfferRepository.GetOffers());
         }
         
         [HttpGet("{Name}")]
         [Offer_ValidateProductNameFilter]
         public IActionResult GetOffer(string Name)
         {
-            return Ok(OfferRepositories.GetOffer(Name));
+            return Ok(OfferRepository.GetOffer(Name));
         }
 
         [HttpPost]
         [Offer_ValidateAddOfferFilter]
         public IActionResult AddOffer([FromBody] Offer Offer)
         {
-            OfferRepositories.AddOffer(Offer);            
+            OfferRepository.AddOffer(Offer);            
             return CreatedAtAction("AddOffer",Offer);
         }
 
@@ -34,7 +37,7 @@ namespace CheckoutRestApi.Controllers
         [Offer_ValidateUpdateOfferFilter]
          public IActionResult UpdateOffer([FromBody]Offer Offer)
         {
-            OfferRepositories.UpdateOffer(Offer);
+            OfferRepository.UpdateOffer(Offer);
 
             return NoContent();
         }
@@ -44,7 +47,7 @@ namespace CheckoutRestApi.Controllers
         public IActionResult DeleteOffer(String Name)
         {
             var Product = GetOffer(Name);
-            OfferRepositories.DeleteOffer(Name);
+            OfferRepository.DeleteOffer(Name);
 
             return Ok(Product);
         }
