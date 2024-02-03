@@ -5,11 +5,11 @@ namespace CheckoutRestApi.src
     /*
     *Main logic of checkout Items amount total wrt discounts
     */
-    public class CheckoutLogic {
+    public class CheckoutLogic(OfferRepositories Offerrepository,ProductRepositories Productrepositories) {
 
          private char[] ScannedProducts = new char[]{};
-         private readonly List<Product> Products = ProductRepositories.GetProducts();
-         private readonly List<Offer> Offers = OfferRepositories.GetOffers();
+         private readonly List<Product> Products = Productrepositories.GetProducts();
+         private readonly List<Offer> Offers = Offerrepository.GetOffers();
 
         /*
          *Intial call method to get total amount of Items

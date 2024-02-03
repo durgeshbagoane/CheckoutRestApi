@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace CheckoutRestApi.Controllers.Filters
 {
     public partial class Product_ValidateAddProductFilterAttribute: ActionFilterAttribute{
+        private readonly ProductRepositories ProductRepositories;
+        public Product_ValidateAddProductFilterAttribute(){
+            ProductRepositories = new ProductRepositories();
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);

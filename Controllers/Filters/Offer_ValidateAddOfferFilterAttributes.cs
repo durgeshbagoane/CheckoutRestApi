@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace CheckoutRestApi.Controllers.Filters
 {
     public partial class Offer_ValidateAddOfferFilterAttribute: ActionFilterAttribute{
+        private readonly OfferRepositories OfferRepositories;
+        public Offer_ValidateAddOfferFilterAttribute(){
+            OfferRepositories = new OfferRepositories();
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);

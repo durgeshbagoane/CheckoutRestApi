@@ -1,9 +1,10 @@
 using Xunit;
 using CheckoutRestApi.src;
+using CheckoutRestApi.Repositories;
 
 public class CheckoutLogicTests
 {
-    CheckoutLogic CheckoutLogic = new CheckoutLogic();
+    CheckoutLogic CheckoutLogic = new CheckoutLogic(new OfferRepositories(),new ProductRepositories());
 
     [Fact]
     public void PassingTotalTest(){
