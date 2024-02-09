@@ -1,20 +1,34 @@
 using CheckoutRestApi.Models;
 using CheckoutRestApi.Repositories;
+using CheckoutRestApi.Repositories.Interface;
+using CheckoutRestApi.src.Interface;
 namespace CheckoutRestApi.src
 {
     /*
     *Main logic of checkout Items amount total wrt discounts
     */
-    public class CheckoutLogic(OfferRepositories Offerrepository,ProductRepositories Productrepositories) {
+    public class CheckoutLogic : ICheckoutLogic {
 
-         private char[] ScannedProducts = new char[]{};
-         private readonly List<Product> Products = Productrepositories.GetProducts();
-         private readonly List<Offer> Offers = Offerrepository.GetOffers();
+        private char[] ScannedProducts = new char[]{};
+        private OfferRepositories offerRepositories;
+        private ProductRepositories productRepositories;
+        private readonly List<Product> Products;
+         private readonly List<Offer> Offers;
+        public CheckoutLogic(IOfferRepositories Offerrepository,IProductRepositories Productrepositories){
+            Products = Productrepositories.GetProducts();
+            Offers = Offerrepository.GetOffers();
+         }
+
+        public CheckoutLogic(OfferRepositories offerRepositories, ProductRepositories productRepositories)
+        {
+            this.offerRepositories = offerRepositories;
+            this.productRepositories = productRepositories;
+        }
 
         /*
          *Intial call method to get total amount of Items
         */
-        public double Total(string Items){
+        public async Task<double> Total(string Items){
 
             double WithOutDiscountTotal = 0;
             double DiscountTotal = 0;

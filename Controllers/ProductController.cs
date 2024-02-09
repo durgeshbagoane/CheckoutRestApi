@@ -1,52 +1,57 @@
 using CheckoutRestApi.Controllers.Filters;
 using CheckoutRestApi.Models;
 using CheckoutRestApi.Repositories;
+using CheckoutRestApi.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CheckoutRestApi.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class ProductController(ProductRepositories Productrepositories): ControllerBase
+    public class ProductController: ControllerBase
     {
-        private readonly ProductRepositories ProductRepositories = Productrepositories;
+        private readonly IProductRepositories ProductRepositories;
+
+        public ProductController(IProductRepositories Productrepositories){
+            ProductRepositories = Productrepositories;
+        }
         [HttpGet]
-        public IActionResult GetProducts()
+        public async Task<IActionResult> GetProducts()
         {
             return Ok(ProductRepositories.GetProducts());
         }
 
         [HttpGet("{Name}")]
         [Product_ValidateProductNameFilter]
-        public IActionResult GetProduct(string Name)
+        public async Task<IActionResult> GetProduct(string Name)
         {
-            return Ok(ProductRepositories.GetProduct(Name));
+            return Ok(await ProductRepositories.GetProduct(Name));
         }
 
         [HttpPost]
         [Product_ValidateAddProductFilter]
-        public IActionResult AddProduct([FromBody]Product Product)
+        public async Task<IActionResult> AddProduct([FromBody]Product Product)
         {
-            ProductRepositories.AddProduct(Product);            
+            await ProductRepositories.AddProduct(Product);            
             return CreatedAtAction("AddProduct",Product);
         }
 
         [HttpPut]
         [Product_ValidateUpdateProductFilter]
-         public IActionResult UpdateProduct([FromBody]Product Product)
+         public async Task<IActionResult> UpdateProduct([FromBody]Product Product)
         {
 
-            ProductRepositories.UpdateProduct(Product);
+            await ProductRepositories.UpdateProduct(Product);
             
             return NoContent();
         }
 
         [HttpDelete("{Name}")]
         [Product_ValidateProductNameFilter]
-        public IActionResult DeleteProduct(String Name)
+        public async Task<IActionResult> DeleteProduct(String Name)
         {
-            var Product = GetProduct(Name);
-            ProductRepositories.DeleteProduct(Name);
+            var Product = await GetProduct(Name);
+            await ProductRepositories.DeleteProduct(Name);
 
             return Ok(Product);
         }

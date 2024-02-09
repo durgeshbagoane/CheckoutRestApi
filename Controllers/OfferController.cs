@@ -1,18 +1,22 @@
 using CheckoutRestApi.Controllers.Filters;
 using CheckoutRestApi.Models;
 using CheckoutRestApi.Repositories;
+using CheckoutRestApi.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CheckoutRestApi.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class OfferController(OfferRepositories Offerrepository): ControllerBase
+    public class OfferController: ControllerBase
     {
-        private readonly OfferRepositories OfferRepository = Offerrepository;
+        private readonly IOfferRepositories OfferRepository;
 
+        public OfferController(IOfferRepositories Offerrepository){
+            OfferRepository = Offerrepository;
+        }
         [HttpGet]
-        public IActionResult GetOffers()
+        public async Task<IActionResult> GetOffers()
         {
             
             return Ok(OfferRepository.GetOffers());
@@ -20,33 +24,33 @@ namespace CheckoutRestApi.Controllers
         
         [HttpGet("{Name}")]
         [Offer_ValidateProductNameFilter]
-        public IActionResult GetOffer(string Name)
+        public async Task<IActionResult> GetOffer(string Name)
         {
-            return Ok(OfferRepository.GetOffer(Name));
+            Offer offer = await OfferRepository.GetOffer(Name);
+            return Ok(offer);
         }
 
         [HttpPost]
         [Offer_ValidateAddOfferFilter]
-        public IActionResult AddOffer([FromBody] Offer Offer)
+        public async Task<IActionResult> AddOffer([FromBody] Offer Offer)
         {
-            OfferRepository.AddOffer(Offer);            
+            await OfferRepository.AddOffer(Offer);            
             return CreatedAtAction("AddOffer",Offer);
         }
 
         [HttpPut]
         [Offer_ValidateUpdateOfferFilter]
-         public IActionResult UpdateOffer([FromBody]Offer Offer)
+         public async Task<IActionResult> UpdateOffer([FromBody]Offer Offer)
         {
-            OfferRepository.UpdateOffer(Offer);
-
+            await OfferRepository.UpdateOffer(Offer);
             return NoContent();
         }
 
         [HttpDelete("{Name}")]
         [Offer_ValidateProductNameFilter]
-        public IActionResult DeleteOffer(String Name)
+        public async Task<IActionResult> DeleteOffer(String Name)
         {
-            var Product = GetOffer(Name);
+            var Product = await GetOffer(Name);
             OfferRepository.DeleteOffer(Name);
 
             return Ok(Product);

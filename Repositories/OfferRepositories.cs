@@ -1,8 +1,9 @@
 using CheckoutRestApi.Models;
+using CheckoutRestApi.Repositories.Interface;
 
 namespace CheckoutRestApi.Repositories
 {
-    public  class OfferRepositories
+    public  class OfferRepositories : IOfferRepositories
     {
         private static  List<Offer> Offers =
         [
@@ -18,22 +19,22 @@ namespace CheckoutRestApi.Repositories
             return Offers;
         }
 
-        public  Offer? GetOffer(string Name){
+        public async Task <Offer?> GetOffer(string Name){
             return Offers.FirstOrDefault(Offer => Offer.Name == Name);
         }
 
-        public void AddOffer(Offer Offer){
+        public async Task AddOffer(Offer Offer){
             Offers.Add(Offer);
         }
 
-        public void UpdateOffer(Offer Offer){
+        public async Task UpdateOffer(Offer Offer){
             var OfferToUpdate = Offers.First(O => O.Name == Offer.Name);
             OfferToUpdate.Price = Offer.Price;
             OfferToUpdate.Quantity = Offer.Quantity;
         }
 
-        public void DeleteOffer(String Name){
-            var Offer = GetOffer(Name);
+        public async void DeleteOffer(String Name){
+            var Offer = await GetOffer(Name);
             if(Offer != null){
                 Offers.Remove(Offer);
             }

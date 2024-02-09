@@ -1,8 +1,9 @@
 using CheckoutRestApi.Models;
+using CheckoutRestApi.Repositories.Interface;
 
 namespace CheckoutRestApi.Repositories
 {
-    public class ProductRepositories
+    public class ProductRepositories : IProductRepositories
     {
         private static  List<Product> Products =
         [
@@ -18,21 +19,21 @@ namespace CheckoutRestApi.Repositories
             return Products;
         }
 
-        public Product? GetProduct(string Name){
+        public async Task<Product?> GetProduct(string Name){
             return Products.FirstOrDefault( Product => Product.Name == Name );
         }
 
-        public void AddProduct(Product Product){
+        public async Task AddProduct(Product Product){
             Products.Add(Product);
         }
 
-        public void UpdateProduct(Product Product){
+        public async Task UpdateProduct(Product Product){
             var ProductToUpdate = Products.First(P => P.Name == Product.Name);
             ProductToUpdate.Price = Product.Price;
         }
 
-        public void DeleteProduct(String Name){
-            var Product = GetProduct(Name);
+        public async Task DeleteProduct(String Name){
+            var Product = await GetProduct(Name);
             if(Product != null){
                 Products.Remove(Product);
             }
