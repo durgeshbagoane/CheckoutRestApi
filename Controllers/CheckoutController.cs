@@ -20,8 +20,14 @@ namespace CheckoutRestApi.Controllers
         [Checkout_ValidateCheckoutItemsFilter]
         public async Task<IActionResult> GetTotal([FromBody]Checkout Checkout)
         {
-            Checkout.Total = await checkoutLogic.Total(Checkout.Items);
-            return Ok(Checkout);
+            try{
+                Checkout.Total = await checkoutLogic.Total(Checkout.Items);
+                return Ok(Checkout);
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
     }
 }

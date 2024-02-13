@@ -25,35 +25,57 @@ namespace CheckoutRestApi.Controllers
         [Product_ValidateProductNameFilter]
         public async Task<IActionResult> GetProduct(string Name)
         {
-            return Ok(await ProductRepositories.GetProduct(Name));
+            try{
+                return Ok(await ProductRepositories.GetProduct(Name));
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
 
         [HttpPost]
         [Product_ValidateAddProductFilter]
         public async Task<IActionResult> AddProduct([FromBody]Product Product)
         {
-            await ProductRepositories.AddProduct(Product);            
-            return CreatedAtAction("AddProduct",Product);
+            try{
+                await ProductRepositories.AddProduct(Product);            
+                return CreatedAtAction("AddProduct",Product);
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
 
         [HttpPut]
         [Product_ValidateUpdateProductFilter]
          public async Task<IActionResult> UpdateProduct([FromBody]Product Product)
         {
-
-            await ProductRepositories.UpdateProduct(Product);
-            
-            return NoContent();
+            try{
+                await ProductRepositories.UpdateProduct(Product);
+                return NoContent();
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
 
         [HttpDelete("{Name}")]
         [Product_ValidateProductNameFilter]
         public async Task<IActionResult> DeleteProduct(String Name)
         {
-            var Product = await GetProduct(Name);
-            await ProductRepositories.DeleteProduct(Name);
+            try{
+                var Product = await GetProduct(Name);
+                await ProductRepositories.DeleteProduct(Name);
 
-            return Ok(Product);
+                return Ok(Product);
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
     }
 }

@@ -26,34 +26,59 @@ namespace CheckoutRestApi.Controllers
         [Offer_ValidateProductNameFilter]
         public async Task<IActionResult> GetOffer(string Name)
         {
-            Offer offer = await OfferRepository.GetOffer(Name);
-            return Ok(offer);
+            try{
+                Offer offer = await OfferRepository.GetOffer(Name);
+                return Ok(offer);
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
 
         [HttpPost]
         [Offer_ValidateAddOfferFilter]
         public async Task<IActionResult> AddOffer([FromBody] Offer Offer)
         {
-            await OfferRepository.AddOffer(Offer);            
-            return CreatedAtAction("AddOffer",Offer);
+            try{
+                await OfferRepository.AddOffer(Offer);            
+                return CreatedAtAction("AddOffer",Offer);
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
 
         [HttpPut]
         [Offer_ValidateUpdateOfferFilter]
          public async Task<IActionResult> UpdateOffer([FromBody]Offer Offer)
         {
-            await OfferRepository.UpdateOffer(Offer);
-            return NoContent();
+
+            try{
+                await OfferRepository.UpdateOffer(Offer);
+                return NoContent();
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
 
         [HttpDelete("{Name}")]
         [Offer_ValidateProductNameFilter]
         public async Task<IActionResult> DeleteOffer(String Name)
         {
-            var Product = await GetOffer(Name);
-            OfferRepository.DeleteOffer(Name);
 
-            return Ok(Product);
+            try{
+                var Product = await GetOffer(Name);
+                OfferRepository.DeleteOffer(Name);
+                return Ok(Product);
+            }
+            catch (AggregateException)
+            {
+                throw;
+            }
         }
     }
 }
